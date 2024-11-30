@@ -5,9 +5,13 @@
  * @format
  */
 
-import React from 'react';
+import {Canvas, CanvasRef} from '@benjeau/react-native-draw';
+import {CameraRoll} from '@react-native-camera-roll/camera-roll';
+import React, {useRef} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Alert,
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -16,6 +20,8 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import ViewShot, {captureRef} from 'react-native-view-shot';
 
 import {
   Colors,
@@ -61,6 +67,8 @@ function App(): React.JSX.Element {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+  const canvasRef = useRef<CanvasRef>(null);
+  const viewShotRef = useRef<ViewShot>(null);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -68,30 +76,52 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
+      <View
+        style={{
+          backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        }}>
+        <ViewShot ref={viewShotRef}>
+          <Canvas
+            ref={canvasRef}
+            style={{
+              backgroundColor: 'white',
+              height: 500,
+            }}
+            height={500}
+            color="black"
+            thickness={10}
+            opacity={1}
+            onPathsChange={paths => {
+              console.log('path change');
+              console.log(paths);
+            }}
+          />
+        </ViewShot>
         <View
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            flexDirection: 'row',
+            height: 100,
+            justifyContent: 'space-evenly',
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+          <Button title="Clear" onPress={() => canvasRef.current?.clear()} />
+          <Button title="Undo" onPress={() => canvasRef.current?.undo()} />
+          <Button
+            title="Save"
+            onPress={async () => {
+              try {
+                const uri = await captureRef(viewShotRef, {
+                  format: 'png',
+                  quality: 0.8,
+                });
+                await CameraRoll.saveAsset(uri, {type: 'photo'});
+                Alert.alert('Alert', 'Image saved to photo library');
+              } catch (error) {
+                console.error('Error saving image', error);
+              }
+            }}
+          />
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

@@ -10,8 +10,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@benjeau/react-native-draw": "^0.8.3",
+    "@react-native-camera-roll/camera-roll": "^7.9.0",
     "react": "18.3.1",
-    "react-native": "0.76.3"
+    "react-native": "0.76.3",
+    "react-native-gesture-handler": "^2.21.2",
+    "react-native-svg": "^15.9.0",
+    "react-native-view-shot": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -32,6 +37,9 @@
     "prettier": "2.8.8",
     "react-test-renderer": "18.3.1",
     "typescript": "5.0.4"
+  },
+  "resolutions": {
+    "@luncheon/simplify-svg-path": "0.2.0"
   },
   "engines": {
     "node": ">=18"
