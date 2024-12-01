@@ -16,7 +16,8 @@
     "react-native": "0.76.3",
     "react-native-gesture-handler": "^2.21.2",
     "react-native-svg": "^15.9.0",
-    "react-native-view-shot": "^4.0.2"
+    "react-native-view-shot": "^4.0.2",
+    "rn-ml-kit-text-recognition": "link:./modules/rn-ml-kit-text-recognition"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

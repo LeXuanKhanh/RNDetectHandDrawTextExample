@@ -1,0 +1,19 @@
+{
+  "name": "rn-ml-kit-text-recognition",
+  "version": "0.0.0",
+  "description": "react native mlkit text recognition",
+  "main": "src/index",
+  "codegenConfig": {
+    "name": "RNRnMlKitTextRecognitionSpec",
+    "type": "modules",
+    "jsSrcsDir": "src"
+  },
+  "author": " <> ()",
+  "license": "UNLICENSED",
+  "homepage": "#readme",
+  "create-react-native-library": {
+    "type": "module-mixed",
+    "languages": "kotlin-objc",
+    "version": "0.44.3"
+  }
+}

@@ -7,7 +7,7 @@
 
 import {Canvas, CanvasRef} from '@benjeau/react-native-draw';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   Alert,
@@ -30,6 +30,10 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {
+  getTextFromPath,
+  multiply,
+} from './modules/rn-ml-kit-text-recognition/src';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -70,6 +74,28 @@ function App(): React.JSX.Element {
   const canvasRef = useRef<CanvasRef>(null);
   const viewShotRef = useRef<ViewShot>(null);
 
+  const runNativeFun = async () => {
+    const a = await multiply(12, 5);
+    console.log(a);
+  };
+
+  useEffect(() => {
+    runNativeFun();
+  }, []);
+
+  const convertToText = async (path: string) => {
+    if (path.length === 0) {
+      return;
+    }
+
+    const comps = path.split('/');
+    const fileName = comps[comps.length - 1];
+    console.log(`ReactNative/${fileName}`);
+    const text = await getTextFromPath(`ReactNative/${fileName}`);
+    console.log('result from js side: ');
+    console.log(text);
+  };
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -92,8 +118,11 @@ function App(): React.JSX.Element {
             thickness={10}
             opacity={1}
             onPathsChange={paths => {
-              console.log('path change');
-              console.log(paths);
+              // const points = paths.map(item => item.data ?? []);
+              // console.log(points);
+              // for (const item of points) {
+              //   console.log(item);
+              // }
             }}
           />
         </ViewShot>
@@ -106,15 +135,19 @@ function App(): React.JSX.Element {
           <Button title="Clear" onPress={() => canvasRef.current?.clear()} />
           <Button title="Undo" onPress={() => canvasRef.current?.undo()} />
           <Button
-            title="Save"
+            title="Detect"
             onPress={async () => {
               try {
                 const uri = await captureRef(viewShotRef, {
                   format: 'png',
-                  quality: 0.8,
+                  quality: 1,
+                  width: 1080,
+                  height: 1080,
                 });
-                await CameraRoll.saveAsset(uri, {type: 'photo'});
-                Alert.alert('Alert', 'Image saved to photo library');
+                // await CameraRoll.saveAsset(uri, {type: 'photo'});
+                console.log(uri);
+                convertToText(uri);
+                // Alert.alert('Alert', 'Image saved to photo library');
               } catch (error) {
                 console.error('Error saving image', error);
               }
