@@ -8,6 +8,9 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30911.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleMLKit/DigitalInkRecognition (6.0.0):
+    - GoogleMLKit/MLKitCore
+    - MLKitDigitalInkRecognition (~> 5.0.0)
   - GoogleMLKit/MLKitCore (6.0.0):
     - MLKitCommon (~> 11.0.0)
   - GoogleMLKit/TextRecognition (6.0.0):
@@ -42,6 +45,12 @@ PODS:
     - GoogleUtilities/UserDefaults (< 8.0, >= 7.13.0)
     - GoogleUtilitiesComponents (~> 1.0)
     - GTMSessionFetcher/Core (< 4.0, >= 3.3.2)
+  - MLKitDigitalInkRecognition (5.0.0):
+    - MLKitCommon (~> 11.0)
+    - MLKitMDD (~> 7.0)
+    - SSZipArchive (< 3.0, >= 2.5.5)
+  - MLKitMDD (7.0.0):
+    - MLKitCommon (~> 11.0)
   - MLKitTextRecognition (4.0.0):
     - MLKitCommon (~> 11.0)
     - MLKitTextRecognitionCommon (= 3.0.0)
@@ -1608,6 +1617,7 @@ PODS:
   - rn-ml-kit-text-recognition (0.0.0):
     - DoubleConversion
     - glog
+    - GoogleMLKit/DigitalInkRecognition (= 6.0.0)
     - GoogleMLKit/TextRecognition (= 6.0.0)
     - hermes-engine
     - RCT-Folly (= 2024.01.01.00)
@@ -1692,6 +1702,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
+  - SSZipArchive (2.6.0)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -1776,12 +1787,15 @@ SPEC REPOS:
     - GTMSessionFetcher
     - MLImage
     - MLKitCommon
+    - MLKitDigitalInkRecognition
+    - MLKitMDD
     - MLKitTextRecognition
     - MLKitTextRecognitionCommon
     - MLKitVision
     - nanopb
     - PromisesObjC
     - SocketRocket
+    - SSZipArchive
 
 EXTERNAL SOURCES:
   boost:
@@ -1937,6 +1951,8 @@ SPEC CHECKSUMS:
   hermes-engine: 0555a84ea495e8e3b4bde71b597cd87fbb382888
   MLImage: 1824212150da33ef225fbd3dc49f184cf611046c
   MLKitCommon: afec63980417d29ffbb4790529a1b0a2291699e1
+  MLKitDigitalInkRecognition: e98972a195fd44fe9e8c649118d34dae484c94bf
+  MLKitMDD: 61c79805b9fb4833a1cbb4ac1178988b858fa06a
   MLKitTextRecognition: c83c18ad25496f2077f6ec93c5940487ff2eb343
   MLKitTextRecognitionCommon: c0b3a63d529296a19bce1f8bc8a513644ed4d1f6
   MLKitVision: e858c5f125ecc288e4a31127928301eaba9ae0c1
@@ -2000,10 +2016,11 @@ SPEC CHECKSUMS:
   React-utils: 2bcaf4f4dfe361344bce2fae428603d518488630
   ReactCodegen: ae99a130606068ed40d1d9c0d5f25fda142a0647
   ReactCommon: 89c87b343deacc8610b099ac764848f0ce937e3e
-  rn-ml-kit-text-recognition: 5d7c4b16ee0a7942ba3db64a3f99f405541dc1e1
+  rn-ml-kit-text-recognition: c6d35c1f77b3c703de5f1b67e5ac2a76c9fb8e42
   RNGestureHandler: 0e5ae8d72ef4afb855e98dcdbe60f27d938abe13
   RNSVG: b2fbe96b2bb3887752f8abc1f495953847e90384
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
+  SSZipArchive: 8a6ee5677c8e304bebc109e39cf0da91ccef22ea
   Yoga: 3deb2471faa9916c8a82dda2a22d3fba2620ad37
 
 PODFILE CHECKSUM: 029a8ccf8c0e00138888a2212e6e5c7dd2fa4ee7

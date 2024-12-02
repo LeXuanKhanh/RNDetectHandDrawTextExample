@@ -21,6 +21,10 @@ RCT_EXPORT_METHOD(multiply:(double)a
   [RnMlKitTextRecognitionSwift getTextFromPath:path resolve:resolve reject:reject];
 }
 
+- (void)getTextFromPoints:(NSArray *)points resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  [RnMlKitTextRecognitionSwift getTextFromPoints:points resolve:resolve reject:reject];
+}
+
 // Don't compile this code when we build for the old architecture.
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:

@@ -31,3 +31,9 @@ export function multiply(a: number, b: number): Promise<number> {
 export function getTextFromPath(path: string): Promise<number> {
   return RnMlKitTextRecognition.getTextFromPath(path);
 }
+
+export function getTextFromPoints(
+  points: [number, number, number][],
+): Promise<string> {
+  return RnMlKitTextRecognition.getTextFromPoints(points);
+}

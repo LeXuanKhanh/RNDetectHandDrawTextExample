@@ -8,8 +8,41 @@
 import Foundation
 import MLKitTextRecognition
 import MLKitVision
+import MLKitDigitalInkRecognition
+
+class DigitalInkHandler {
+    static let shared = DigitalInkHandler()
+    
+    let model: DigitalInkRecognitionModel
+    let modelManager: ModelManager
+    let conditions: ModelDownloadConditions
+    let options: DigitalInkRecognizerOptions
+    let recognizer: DigitalInkRecognizer
+    let identifier: DigitalInkRecognitionModelIdentifier?
+    
+    private init() {
+        identifier = DigitalInkRecognitionModelIdentifier(forLanguageTag: "en-US")
+        
+        guard let identifier = identifier else {
+            fatalError("No model was found or the language tag couldn't be parsed.")
+        }
+        
+        model = DigitalInkRecognitionModel(modelIdentifier: identifier)
+        modelManager = ModelManager.modelManager()
+        conditions = ModelDownloadConditions(allowsCellularAccess: true, allowsBackgroundDownloading: true)
+        
+        modelManager.download(model, conditions: conditions)
+        
+        options = DigitalInkRecognizerOptions(model: model)
+        recognizer = DigitalInkRecognizer.digitalInkRecognizer(options: options)
+    }
+}
+
+
 
 class RnMlKitTextRecognitionSwift: NSObject {
+  static let kMillisecondsPerTimeInterval = 1000.0
+  
   @objc
   static func multiply(a: Float, b: Float, resolve:RCTPromiseResolveBlock, reject:RCTPromiseRejectBlock) -> Void {
     resolve(a*b*2)
@@ -69,6 +102,39 @@ class RnMlKitTextRecognitionSwift: NSObject {
       print("text from result: \(resultText)")
       resolve(resultText)
     }
+  }
+  
+  @objc
+  static func getTextFrom(points: NSArray,  resolve:@escaping RCTPromiseResolveBlock, reject:@escaping RCTPromiseRejectBlock) -> Void {
+    var pointArr = points as! [[Int]]
+    for index in pointArr.indices {
+      pointArr[index][2] = Int(Date().timeIntervalSince1970 * kMillisecondsPerTimeInterval) + index*100
+    }
+    
+    print(pointArr)
+    let mlPoints = pointArr.map { StrokePoint(x: Float($0[0]), y: Float($0[1]), t: $0[2]) }
+    let strokes = Stroke(points: mlPoints)
+    let ink = Ink.init(strokes: [strokes])
+    
+    DigitalInkHandler.shared.recognizer.recognize(
+        ink: ink,
+        completion: {
+          (result: DigitalInkRecognitionResult?, error: Error?) in
+          var alertTitle = ""
+          var alertText = ""
+          if let result = result, let candidate = result.candidates.first {
+            alertTitle = "I recognized this:"
+            alertText = candidate.text
+            resolve(candidate.text)
+          } else {
+            alertTitle = "I hit an error:"
+            alertText = error!.localizedDescription
+            reject("", "Digital Ink Request Error: ", error)
+          }
+          print("\(alertTitle) \(alertText)")
+        }
+      )
+    
   }
   
 }

@@ -5,7 +5,7 @@
  * @format
  */
 
-import {Canvas, CanvasRef} from '@benjeau/react-native-draw';
+import {Canvas, CanvasRef, PathType} from '@benjeau/react-native-draw';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import React, {useEffect, useRef} from 'react';
 import type {PropsWithChildren} from 'react';
@@ -32,38 +32,9 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import {
   getTextFromPath,
+  getTextFromPoints,
   multiply,
 } from './modules/rn-ml-kit-text-recognition/src';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -74,15 +45,6 @@ function App(): React.JSX.Element {
   const canvasRef = useRef<CanvasRef>(null);
   const viewShotRef = useRef<ViewShot>(null);
 
-  const runNativeFun = async () => {
-    const a = await multiply(12, 5);
-    console.log(a);
-  };
-
-  useEffect(() => {
-    runNativeFun();
-  }, []);
-
   const convertToText = async (path: string) => {
     if (path.length === 0) {
       return;
@@ -92,6 +54,29 @@ function App(): React.JSX.Element {
     const fileName = comps[comps.length - 1];
     console.log(`ReactNative/${fileName}`);
     const text = await getTextFromPath(`ReactNative/${fileName}`);
+    console.log('result from js side: ');
+    console.log(text);
+  };
+
+  const convertToPoints = async (path: PathType) => {
+    console.log('path');
+    const firstPath = path.data[0];
+    const points = path.data.map(item => {
+      return item.map(
+        item1 => [item1[0], item1[1], 0] as [number, number, number],
+      );
+    });
+
+    const firstPathPoints = firstPath.map(
+      item1 => [item1[0], item1[1], 0] as [number, number, number],
+    );
+
+    //sconsole.log(points);
+    // for (const item of points) {
+    //   console.log(item);
+    // }
+
+    const text = await getTextFromPoints(firstPathPoints);
     console.log('result from js side: ');
     console.log(text);
   };
@@ -118,11 +103,11 @@ function App(): React.JSX.Element {
             thickness={10}
             opacity={1}
             onPathsChange={paths => {
-              // const points = paths.map(item => item.data ?? []);
-              // console.log(points);
-              // for (const item of points) {
-              //   console.log(item);
-              // }
+              if (paths.length === 0) {
+                return;
+              }
+
+              convertToPoints(paths[0]);
             }}
           />
         </ViewShot>
