@@ -40,7 +40,7 @@ class DigitalInkHandler {
 
 
 
-class RnMlKitTextRecognitionSwift: NSObject {
+class TextRecognition: NSObject {
   static let kMillisecondsPerTimeInterval = 1000.0
   
   @objc

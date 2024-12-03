@@ -11,18 +11,18 @@ RCT_EXPORT_METHOD(multiply:(double)a
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
-  [RnMlKitTextRecognitionSwift multiplyWithA:a b:b resolve:resolve reject:reject];
+  [TextRecognition multiplyWithA:a b:b resolve:resolve reject:reject];
   //    NSNumber *result = @(a * b);
   //
   //    resolve(result);
 }
 
 - (void)getTextFromPath:(NSString *)path resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject { 
-  [RnMlKitTextRecognitionSwift getTextFromPath:path resolve:resolve reject:reject];
+  [TextRecognition getTextFromPath:path resolve:resolve reject:reject];
 }
 
 - (void)getTextFromPoints:(NSArray *)points resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  [RnMlKitTextRecognitionSwift getTextFromPoints:points resolve:resolve reject:reject];
+  [TextRecognition getTextFromPoints:points resolve:resolve reject:reject];
 }
 
 // Don't compile this code when we build for the old architecture.
