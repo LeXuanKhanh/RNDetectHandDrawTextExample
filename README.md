@@ -1,4 +1,5 @@
 A React Native Example which using Digital Ink Recognition and Text Recognition to detect handraw text
+
 Required React Native Library:
 
 - @benjeau/react-native-draw: drawing view
