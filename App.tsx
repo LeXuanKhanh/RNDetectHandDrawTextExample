@@ -10,6 +10,7 @@ import React, {useRef} from 'react';
 import {
   Alert,
   Button,
+  Platform,
   SafeAreaView,
   StatusBar,
   useColorScheme,
@@ -40,15 +41,18 @@ function App(): React.JSX.Element {
 
     const comps = path.split('/');
     const fileName = comps[comps.length - 1];
-    console.log(`ReactNative/${fileName}`);
-    const text = await getTextFromPath(`ReactNative/${fileName}`);
+    var filePath = path;
+    if (Platform.OS === 'ios') {
+      filePath = `ReactNative/${fileName}`;
+    }
+    console.log(filePath);
+    const text = await getTextFromPath(filePath);
     Alert.alert('Alert', `Text recognition: ${text}`);
     // console.log('result from js side: ');
     // console.log(text);
   };
 
   const convertToPoints = async (path: PathType) => {
-    console.log('path');
     const firstPath = path.data[0];
     const points = path.data.map(item => {
       return item.map(
@@ -66,11 +70,11 @@ function App(): React.JSX.Element {
     // }
     try {
       const text = await getTextFromPoints(firstPathPoints);
-      console.log('result from js side: ');
-      console.log(text);
+      console.log(`Detected handraw text: ${text}`);
       Alert.alert('Alert', `Detected handraw text: ${text}`);
     } catch (e) {
-      console.log(Alert.alert('Alert', `Error in detech handraw: ${e}`));
+      Alert.alert('Alert', `Error in detech handraw: ${e}`);
+      console.log(`Error in detech handraw: ${e}`);
     }
   };
 
@@ -107,7 +111,6 @@ function App(): React.JSX.Element {
         <View
           style={{
             flexDirection: 'row',
-            height: 100,
             justifyContent: 'space-evenly',
           }}>
           <Button title="Clear" onPress={() => canvasRef.current?.clear()} />
@@ -122,10 +125,8 @@ function App(): React.JSX.Element {
                   width: 1080,
                   height: 1080,
                 });
-                // await CameraRoll.saveAsset(uri, {type: 'photo'});
                 console.log(uri);
                 convertToText(uri);
-                // Alert.alert('Alert', 'Image saved to photo library');
               } catch (error) {
                 console.error('Error saving image', error);
               }

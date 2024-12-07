@@ -2057,15 +2057,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-camera-roll/camera-roll@npm:^7.9.0":
-  version: 7.9.0
-  resolution: "@react-native-camera-roll/camera-roll@npm:7.9.0"
-  peerDependencies:
-    react-native: ">=0.59"
-  checksum: aec50584e45fa5f678cf0405d9ceec7f6962946fdf483ffb1d138fac601433265cfffe0aad961dc4e1b97ab3dbf7a141e2fef6d7f0b17884116112c8cf341afe
-  languageName: node
-  linkType: hard
-
 "@react-native-community/cli-clean@npm:15.0.1":
   version: 15.0.1
   resolution: "@react-native-community/cli-clean@npm:15.0.1"
@@ -2901,7 +2892,6 @@ __metadata:
     "@babel/preset-env": ^7.25.3
     "@babel/runtime": ^7.25.0
     "@benjeau/react-native-draw": ^0.8.3
-    "@react-native-camera-roll/camera-roll": ^7.9.0
     "@react-native-community/cli": 15.0.1
     "@react-native-community/cli-platform-android": 15.0.1
     "@react-native-community/cli-platform-ios": 15.0.1

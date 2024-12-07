@@ -115,6 +115,9 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  implementation 'com.google.mlkit:digital-ink-recognition:18.1.0'
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4'
+  implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.1'
 }
 
 if (isNewArchitectureEnabled()) {
