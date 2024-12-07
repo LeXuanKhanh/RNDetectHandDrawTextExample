@@ -1,8 +1,12 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+A React Native Example which using Digital Ink Recognition and Text Recognition to detect handraw text
+Required React Native Library:
 
-# Getting Started
+- @benjeau/react-native-draw: drawing view
+- React-native-view-shot: Capture drawing view to image for Text Recogniton (not Digital Ink Recognition)
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+<img title="" src="image/ios.gif" alt="" width="300" data-align="inline">
+
+<img title="" src="image/android.gif" alt="" width="300" data-align="inline">
 
 ## Step 1: Start the Metro Server
 
@@ -33,6 +37,23 @@ yarn android
 ```
 
 ### For iOS
+
+Due to the Turbo Modules's difficulty of writing in Swift, for now we have to add Swift files by hand
+
+Run `pod install`
+
+Open `ios/RNDetectHandDrawTextExample.xcworkspace`
+in Project Stucture, go to Pods/Development Pods/rn-ml-kit-text-recognition and expand it like this. At first, it will not have Swift file
+
+<img title="" src="image/img1.png" alt="" width="400" data-align="inline">
+
+Right click on ios -> Add file to Pods -> Choose the Swift file (TextRecognition.swift).
+
+Xcode will promp whether you want to add bridging header, accept it
+
+Remember to check its target member ship if in belong to `rn-ml-kit-text-recognition`. It's on the right corner pannel when you are at TextRecognition.swift file
+
+<img title="" src="image/img2.png" alt="" width="400" data-align="inline">
 
 ```bash
 # using npm
