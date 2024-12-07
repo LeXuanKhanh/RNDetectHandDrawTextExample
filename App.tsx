@@ -6,35 +6,23 @@
  */
 
 import {Canvas, CanvasRef, PathType} from '@benjeau/react-native-draw';
-import {CameraRoll} from '@react-native-camera-roll/camera-roll';
-import React, {useEffect, useRef} from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useRef} from 'react';
 import {
   Alert,
   Button,
   SafeAreaView,
-  ScrollView,
   StatusBar,
-  StyleSheet,
-  Text,
   useColorScheme,
   View,
 } from 'react-native';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ViewShot, {captureRef} from 'react-native-view-shot';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {
   getTextFromPath,
   getTextFromPoints,
   multiply,
-} from './modules/rn-ml-kit-text-recognition/src';
+} from './modules/rn-ml-kit-text-recognition';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -54,8 +42,9 @@ function App(): React.JSX.Element {
     const fileName = comps[comps.length - 1];
     console.log(`ReactNative/${fileName}`);
     const text = await getTextFromPath(`ReactNative/${fileName}`);
-    console.log('result from js side: ');
-    console.log(text);
+    Alert.alert('Alert', `Text recognition: ${text}`);
+    // console.log('result from js side: ');
+    // console.log(text);
   };
 
   const convertToPoints = async (path: PathType) => {
@@ -71,14 +60,18 @@ function App(): React.JSX.Element {
       item1 => [item1[0], item1[1], 0] as [number, number, number],
     );
 
-    //sconsole.log(points);
+    // console.log(points);
     // for (const item of points) {
     //   console.log(item);
     // }
-
-    const text = await getTextFromPoints(firstPathPoints);
-    console.log('result from js side: ');
-    console.log(text);
+    try {
+      const text = await getTextFromPoints(firstPathPoints);
+      console.log('result from js side: ');
+      console.log(text);
+      Alert.alert('Alert', `Detected handraw text: ${text}`);
+    } catch (e) {
+      console.log(Alert.alert('Alert', `Error in detech handraw: ${e}`));
+    }
   };
 
   return (
@@ -120,7 +113,7 @@ function App(): React.JSX.Element {
           <Button title="Clear" onPress={() => canvasRef.current?.clear()} />
           <Button title="Undo" onPress={() => canvasRef.current?.undo()} />
           <Button
-            title="Detect"
+            title="Text Recognition"
             onPress={async () => {
               try {
                 const uri = await captureRef(viewShotRef, {
@@ -143,24 +136,5 @@ function App(): React.JSX.Element {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
